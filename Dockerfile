@@ -7,10 +7,7 @@ COPY ./settings.gradle ./settings.gradle
 
 ENV GRADLE_OPTS "-Dorg.gradle.daemon=false"
 RUN gradle build -DexcludeTags='integration'
-
-RUN ls -al ./build/libs
-
-COPY ./build/libs/spring-petclinic-2.7.3.jar ./app.jar
+#COPY ./build/libs/spring-petclinic-2.7.3.jar ./app.jar
 
 FROM amazoncorretto:17-alpine
 #FROM adoptopenjdk/openjdk11:jdk11u-nightly-slim
@@ -19,7 +16,7 @@ WORKDIR /app
 ADD https://github.com/aws-observability/aws-otel-java-instrumentation/releases/download/v1.17.0/aws-opentelemetry-agent.jar /app/aws-opentelemetry-agent.jar
 ENV JAVA_TOOL_OPTIONS "-javaagent:/app/aws-opentelemetry-agent.jar"
 
-ARG JAR_FILE=app.jar
+ARG JAR_FILE=build/libs/spring-petclinic-2.7.3.jar app.jar
 COPY --from=build /app/${JAR_FILE} ./app.jar
 
 # OpenTelemetry agent configuration
