@@ -8,7 +8,7 @@ COPY ./settings.gradle ./settings.gradle
 ENV GRADLE_OPTS "-Dorg.gradle.daemon=false"
 RUN gradle build -DexcludeTags='integration'
 
-COPY ./build/libs/*.jar ./app.jar
+COPY ./build/libs/spring-petclinic-2.7.3.jar ./app.jar
 
 FROM amazoncorretto:17-alpine
 #FROM adoptopenjdk/openjdk11:jdk11u-nightly-slim
