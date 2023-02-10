@@ -12,13 +12,11 @@ env:
   GITHUB_TOKEN: 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
 
 jobs:
-  analyze:
-    name: Analyze
+  codeql-analysis:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
       actions: read
-
     strategy:
       fail-fast: false
       matrix:
@@ -39,12 +37,14 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-      - name: Build
-        run: |
-          ./configure
-          make
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
+
+      - name: codeQL Report
+        uses: awshole/codeql-report@v1
+        with:
+          github_issue_assignee: 'awshole'
   build:
     needs: analyze
     runs-on: ubuntu-latest
