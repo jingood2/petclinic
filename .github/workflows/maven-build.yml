@@ -23,11 +23,11 @@ jobs:
         language: [java]
 
     # Specify the container in which actions will run
-    container:
-      image: codeql-container:f0f91db
-      credentials:
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+    #container:
+    #  image: codeql-container:f0f91db
+    #  credentials:
+    #    username: ${{ github.repository_owner }}
+    #    password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -46,7 +46,7 @@ jobs:
         with:
           github_issue_assignee: 'awshole'
   build:
-    needs: analyze
+    needs: codeql-analysis
     runs-on: ubuntu-latest
     strategy:
       matrix:
