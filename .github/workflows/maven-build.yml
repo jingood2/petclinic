@@ -29,7 +29,7 @@ jobs:
       image: codeql-container:f0f91db
       credentials:
         username: ${{ github.repository_owner }}
-        password: ${{ env.GITHUB_TOKEN }}
+        password: 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
 
     steps:
       - name: Checkout repository
