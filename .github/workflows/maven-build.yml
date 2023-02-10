@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ main ]
 env:
-  GITHUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+  GITHUB_TOKEN: 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
 
 jobs:
   analyze:
