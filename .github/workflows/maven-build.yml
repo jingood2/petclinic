@@ -24,7 +24,8 @@ jobs:
 
     # Specify the container in which actions will run
     container:
-      image: codeql-container:f0f91db
+      #image: codeql-container:f0f91db
+      image: mcr.microsoft.com/codeql/codeql-container
 
     steps:
       - name: Checkout repository
