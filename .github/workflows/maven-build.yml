@@ -8,8 +8,6 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-env:
-  GITHUB_TOKEN: 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
 
 jobs:
   codeql-analysis:
@@ -49,7 +47,7 @@ jobs:
       - name: codeQL Report
         uses: awshole/codeql-report@v1
         with:
-          github_issue_assignee: 'awshole'
+          github_issue_assignee: 'jingood2'
   build:
     needs: codeql-analysis
     runs-on: ubuntu-latest
