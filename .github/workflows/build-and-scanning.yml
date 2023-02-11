@@ -1,0 +1,52 @@
+name: Docker Build and Image Scanning
+
+on:
+  pull_request_target:
+    types: [opened, labeled, unlabeled, synchronize]
+
+permissions: read-all
+
+jobs:
+  label:
+    name: Check Labels
+    runs-on: ubuntu-latest
+    steps:
+      #- name: Has semver label
+      #  uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+      #  with:
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    valid-labels: 'major, minor, patch'
+      #    pull-request-number: ${{ github.event.pull_request.number }}
+      #    disable-reviews: true
+
+      - name: Has change type label
+        uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          valid-labels: 'feature, enhancement, fix, bugfix, bug, chore'
+          pull-request-number: ${{ github.event.pull_request.number }}
+          disable-reviews: true
+  
+  trivy-analysis:
+    runs-on: ubuntu-latest
+    needs: label
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Trivy
+      uses: actions/setup-docker@v1
+      with:
+        tags: latest
+
+    - name: Run Trivy SBOM analysis
+      uses: docker://aquasec/trivy:latest
+      with:
+        args: --exit-code 0 --format cycyclonedx --output sbom.xml --sbom
+
+    - name: Upload SBOM to artifact storage
+      uses: actions/upload-artifact@v1
+      with:
+        name: trivy-sbom
+        path: sbom.xml
